@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  mysql_local_master:
+    container_name: master
+    image: mysql:5.7.24
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./initsql:/tmp/
+      - ./data/:/var/lib/mysql
+      - ./cnf/write/:/etc/mysql/conf.d
+
+  mysql_local_slave:
+    container_name: slave
+    image: mysql:5.7.24
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "13307:3306"
+    volumes:
+      - ./cnf/read/:/etc/mysql/conf.d
+    depends_on:
+      - mysql_local_master
+

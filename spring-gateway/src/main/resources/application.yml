@@ -1,0 +1,29 @@
+server:
+  port: 80
+
+
+
+
+spring:
+  application:
+    name: spring-gateway
+  cloud:
+    sentinel:
+      scg:
+        fallback:
+          content-type: "application/json"
+          response-status: 200
+          response-body: '{"code": 200,"message": "系统繁忙稍后尝试！"}'
+          mode: response
+      filter:
+        enabled: false
+      transport:
+        dashboard: 127.0.0.1:8084
+        port: 81
+      eager: true
+    gateway:
+      routes:
+        - id: demo
+          uri: http://127.0.0.1:8081/
+          predicates:
+            - Path=/demo/**

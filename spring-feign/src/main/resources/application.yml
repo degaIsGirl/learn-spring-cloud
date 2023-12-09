@@ -1,0 +1,19 @@
+server:
+  port: 8082
+
+service:
+  debug:
+    url: http://127.0.0.1:8081/
+
+feign:
+  sentinel:
+    enabled: true
+
+spring:
+  application:
+    name: spring-feign
+  cloud:
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8084
+        port: 8072

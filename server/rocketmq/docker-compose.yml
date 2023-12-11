@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  nameserver:
+    container_name: name_server
+    image: apache/rocketmq:4.5.0
+    ports:
+      - 9876:9876
+    volumes:
+      - ./namesrv/logs:/home/rocketmq/logs
+    command: sh mqnamesrv
+
+  brokerserver:
+    container_name: broker_server
+    image: apache/rocketmq:4.5.0
+    ports:
+      - 10909:10909
+      - 10911:10911
+      - 10912:10912
+    environment:
+      - NAMESRV_ADDR=nameserver:9876
+    depends_on:
+      - nameserver
+    volumes:
+      - ./broker/logs:/home/rocketmq/logs
+      - ./broker/data:/home/rocketmq/store
+      - ./broker/config/broker.conf:/opt/rocketmq-4.5.0/conf/broker.conf
+    command: sh mqbroker -c /opt/rocketmq-4.5.0/conf/broker.conf
+
+  application:
+    container_name: debug
+    image: eclipse/centos_jdk8:latest
+    ports:
+      - 8081:8081
+    volumes:
+      - /Users/zero/.m2/repository/org/springframework/boot/debug/0.0.1-SNAPSHOT/debug-0.0.1-SNAPSHOT.jar:/tmp/debug-0.0.1-SNAPSHOT.jar
+    command: java -jar /tmp/debug-0.0.1-SNAPSHOT.jar
+
+  dashboard:
+    container_name: dash_board
+    image: apacherocketmq/rocketmq-dashboard:1.0.0
+    ports:
+      - 8111:8080
+    environment:
+      JAVA_OPTS: -Drocketmq.namesrv.addr=nameserver:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false

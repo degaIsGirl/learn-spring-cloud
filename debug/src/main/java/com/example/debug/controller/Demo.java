@@ -1,6 +1,5 @@
 package com.example.debug.controller;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

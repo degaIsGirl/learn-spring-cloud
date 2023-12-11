@@ -1,12 +1,18 @@
 server:
   port: 8081
 
-spring:
-  application:
-    name: debug
-  cloud:
-    sentinel:
-      transport:
-        dashboard: 127.0.0.1:8084
-        port: 8071
-debug: true
+#spring:
+#  application:
+#    name: debug
+#  cloud:
+#    sentinel:
+#      transport:
+#        dashboard: 127.0.0.1:8084
+#        port: 8071
+#debug: true
+
+rocketmq:
+  name-server: "nameserver:9876"
+  producer:
+    group: debug_produce
+    send-msg-timeout: 3000
